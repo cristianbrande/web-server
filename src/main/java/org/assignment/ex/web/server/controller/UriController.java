@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 
 import static org.assignment.ex.web.server.constant.HttpResponse.*;
 
+/** The controller accepts the right method to the wright URI. */
 public class UriController extends Controller {
 
   protected UriMapping uriMapping;
@@ -33,6 +34,10 @@ public class UriController extends Controller {
     this.httpExchangeService = new HttpExchangeService();
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#get(HttpExchange)
+   */
   @Override
   public void get(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.getMethod(httpExchange.getRequestURI().getPath());
@@ -44,6 +49,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#head(HttpExchange)
+   */
   @Override
   public void head(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.headMethod(httpExchange.getRequestURI().getPath());
@@ -55,6 +64,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#post(HttpExchange)
+   */
   @Override
   public void post(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.postMethod(httpExchange.getRequestURI().getPath());
@@ -66,6 +79,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#put(HttpExchange)
+   */
   @Override
   public void put(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.putMethod(httpExchange.getRequestURI().getPath());
@@ -77,6 +94,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#delete(HttpExchange)
+   */
   @Override
   public void delete(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.deleteMethod(httpExchange.getRequestURI().getPath());
@@ -88,6 +109,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#connect(HttpExchange)
+   */
   @Override
   public void connect(HttpExchange httpExchange) {
     Consumer<HttpExchange> method =
@@ -100,6 +125,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#options(HttpExchange)
+   */
   @Override
   public void options(HttpExchange httpExchange) {
     Consumer<HttpExchange> method =
@@ -112,6 +141,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#trace(HttpExchange)
+   */
   @Override
   public void trace(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.traceMethod(httpExchange.getRequestURI().getPath());
@@ -123,6 +156,10 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * If there is a registered method for the URI call it, otherwise call the default mechanism found in
+   * @see org.assignment.ex.web.server.controller.Controller#patch(HttpExchange)
+   */
   @Override
   public void patch(HttpExchange httpExchange) {
     Consumer<HttpExchange> method = uriMapping.patchMethod(httpExchange.getRequestURI().getPath());
@@ -134,7 +171,12 @@ public class UriController extends Controller {
     }
   }
 
-  protected Map<String, List<String>> getUriParmeters(URI uri) {
+  /**
+   * Retrieves the uri params found on the request URI.
+   * @param uri
+   * @return
+   */
+  protected Map<String, List<String>> getUriParameters(URI uri) {
     Map<String, List<String>> parameterMap = new HashMap<>();
     List<NameValuePair> parameters = URLEncodedUtils.parse(uri, Charset.forName("UTF-8"));
 
@@ -150,6 +192,11 @@ public class UriController extends Controller {
     return parameterMap;
   }
 
+  /**
+   * Invokes the method with the httpExchange argument
+   * @param method
+   * @param httpExchange
+   */
   private void accept(Consumer<HttpExchange> method, HttpExchange httpExchange) {
     try {
       method.accept(httpExchange);
@@ -165,6 +212,12 @@ public class UriController extends Controller {
     }
   }
 
+  /**
+   * Writes the given status and response on the httpExchange.
+   * @param httpExchange
+   * @param httpStatus
+   * @param response
+   */
   protected void respond(HttpExchange httpExchange, int httpStatus, byte[] response) {
     httpExchangeService.respond(httpExchange, httpStatus, response);
   }

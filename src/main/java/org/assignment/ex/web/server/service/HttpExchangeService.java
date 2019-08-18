@@ -10,6 +10,12 @@ public class HttpExchangeService {
 
   private Logger log = LoggerFactory.getLogger(getClass());
 
+  /**
+   * Writes the given status and response on the httpExchange.
+   * @param httpExchange
+   * @param httpStatus
+   * @param response
+   */
   public void respond(HttpExchange httpExchange, int httpStatus, byte[] response) {
     try {
       httpExchange.sendResponseHeaders(httpStatus, response.length);

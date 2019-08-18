@@ -6,6 +6,9 @@ import org.assignment.ex.web.server.controller.UriController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Rest controller for the welcome page.
+ */
 public class WelcomeController extends UriController {
   public static final String CONTEXT = "/welcome";
   private static final String URI = CONTEXT;

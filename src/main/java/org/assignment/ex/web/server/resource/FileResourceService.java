@@ -17,6 +17,9 @@ import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * The service writes and reads from the file repository (disk).
+ */
 public class FileResourceService {
   private static final Object lock = new Object();
   private static FileResourceService fileResourceService;
@@ -43,6 +46,12 @@ public class FileResourceService {
     return tempFileResourceController;
   }
 
+  /**
+   * Returns the content of the file.
+   * @throws FileNotFoundException if the file is not found.
+   * @param fileName
+   * @return
+   */
   public byte[] getFile(String fileName) {
     log.info("Retrieving file {}", fileName);
     String absoluteFileName = createAbsoluteFileName(fileName);
@@ -53,16 +62,31 @@ public class FileResourceService {
     }
   }
 
+  /**
+   * Writes the file to the repository.
+   * @param fileName
+   * @param fileContent
+   */
   public void createFile(String fileName, InputStream fileContent) {
     log.info("Creating file {}", fileName);
     writeToFile(fileName, fileContent);
   }
 
+
+  /**
+   * Writes the file to the repository.
+   * @param fileName
+   * @param fileContent
+   */
   public void updateFile(String fileName, InputStream fileContent) {
     log.info("Updating file {}", fileName);
     writeToFile(fileName, fileContent);
   }
 
+  /**
+   * Deletes the file from the repository.
+   * @param fileName
+   */
   public void deleteFile(String fileName) {
     log.info("Deleting file {}", fileName);
     String absoluteFileName = createAbsoluteFileName(fileName);
@@ -70,6 +94,11 @@ public class FileResourceService {
     file.delete();
   }
 
+  /**
+   * Writes the file to disk, locking the file.
+   * @param fileName
+   * @param fileContent
+   */
   private void writeToFile(String fileName, InputStream fileContent) {
     String absoluteFileName = createAbsoluteFileName(fileName);
 

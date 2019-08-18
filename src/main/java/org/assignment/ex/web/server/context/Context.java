@@ -14,6 +14,11 @@ import org.slf4j.LoggerFactory;
 import static org.assignment.ex.web.server.constant.HttpResponse.INTERNAL_SERVER_ERROR;
 import static org.assignment.ex.web.server.constant.HttpResponse.NOT_FOUND;
 
+/**
+ * The context handles any request received on the server and redirects it
+ * to the given rest controller, on the right http method.
+ * @param <T>
+ */
 public abstract class Context<T extends UriController> implements HttpHandler {
   private Logger log = LoggerFactory.getLogger(getClass());
   private HttpExchangeService httpExchangeService = new HttpExchangeService();
@@ -70,6 +75,12 @@ public abstract class Context<T extends UriController> implements HttpHandler {
     }
   }
 
+  /**
+   * Writes the given status and response on the httpExchange.
+   * @param httpExchange
+   * @param httpStatus
+   * @param response
+   */
   protected void respond(HttpExchange httpExchange, int httpStatus, byte[] response) {
     httpExchangeService.respond(httpExchange, httpStatus, response);
   }

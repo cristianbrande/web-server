@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static org.assignment.ex.web.server.constant.HttpResponse.OK;
 
-/** The context for the file operations. */
+/** The rest controller for the file operations. */
 public class FileController extends UriController {
   public static final String CONTEXT = "/file";
   private static final Object lock = new Object();
@@ -46,6 +46,9 @@ public class FileController extends UriController {
     return tempFileController;
   }
 
+  /**
+   * Register the available methods to the URIs.
+   */
   private void registerUrisToHttpMethods() {
     uriMapping.registerGet(FILE_URI, this::getFile);
     uriMapping.registerPost(FILE_URI, this::createFile);
@@ -102,7 +105,7 @@ public class FileController extends UriController {
   }
 
   private String getQueryFileId(HttpExchange httpExchange) {
-    Map<String, List<String>> uriParameterMap = getUriParmeters(httpExchange.getRequestURI());
+    Map<String, List<String>> uriParameterMap = getUriParameters(httpExchange.getRequestURI());
     List<String> fileIds = uriParameterMap.get(QUERY_ID_FILE);
 
     if (fileIds == null || fileIds.size() != 1) {

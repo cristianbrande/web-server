@@ -5,7 +5,7 @@ import org.assignment.ex.web.server.context.Context;
 import org.assignment.ex.web.server.context.file.controller.FileController;
 
 /**
- * TODO
+ * This class handles all the request received on {@value #CONTEXT}.
  */
 public class FileContext extends Context<FileController> {
 
