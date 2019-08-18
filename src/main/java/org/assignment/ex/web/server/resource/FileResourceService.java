@@ -90,8 +90,16 @@ public class FileResourceService {
   public void deleteFile(String fileName) {
     log.info("Deleting file {}", fileName);
     String absoluteFileName = createAbsoluteFileName(fileName);
-    File file = new File(absoluteFileName);
-    file.delete();
+
+    try {
+      RandomAccessFile randomAccessFile = new RandomAccessFile(absoluteFileName, "rw");
+      randomAccessFile.getChannel().lock();
+      randomAccessFile.close();
+      File file = new File(absoluteFileName);
+      file.delete();
+    } catch (IOException e) {
+      throw new RuntimeException("Could not delete file " + absoluteFileName);
+    }
   }
 
   /**
