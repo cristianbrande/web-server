@@ -11,11 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * The service writes and reads from the file repository (disk).
@@ -48,6 +47,7 @@ public class FileResourceService {
 
   /**
    * Returns the content of the file.
+   *
    * @throws FileNotFoundException if the file is not found.
    * @param fileName
    * @return
@@ -56,7 +56,19 @@ public class FileResourceService {
     log.info("Retrieving file {}", fileName);
     String absoluteFileName = createAbsoluteFileName(fileName);
     try {
-      return Files.readAllBytes(Paths.get(absoluteFileName));
+        RandomAccessFile randomAccessFile = new RandomAccessFile(absoluteFileName, "rw");
+        FileChannel channel = randomAccessFile.getChannel();
+        FileLock fileLock = channel.lock();
+
+        ByteBuffer fileContentBuff = ByteBuffer.allocate((int) channel.size());
+        channel.read(fileContentBuff);
+        fileContentBuff.flip();
+
+        fileLock.release();
+        randomAccessFile.close();
+        channel.close();
+
+        return fileContentBuff.array();
     } catch (IOException e) {
       throw new FileNotFoundException();
     }
@@ -64,6 +76,7 @@ public class FileResourceService {
 
   /**
    * Writes the file to the repository.
+   *
    * @param fileName
    * @param fileContent
    */
@@ -72,9 +85,9 @@ public class FileResourceService {
     writeToFile(fileName, fileContent);
   }
 
-
   /**
    * Writes the file to the repository.
+   *
    * @param fileName
    * @param fileContent
    */
@@ -85,6 +98,7 @@ public class FileResourceService {
 
   /**
    * Deletes the file from the repository.
+   *
    * @param fileName
    */
   public void deleteFile(String fileName) {
@@ -104,6 +118,7 @@ public class FileResourceService {
 
   /**
    * Writes the file to disk, locking the file.
+   *
    * @param fileName
    * @param fileContent
    */
