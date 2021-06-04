@@ -40,7 +40,7 @@
 
     <properties>
         <sl4j.version>1.8.0-beta4</sl4j.version>
-        <appach.httpclient.version>4.5.9</appach.httpclient.version>
+        <appach.httpclient.version>4.5.13</appach.httpclient.version>
     </properties>
 
     <build>
